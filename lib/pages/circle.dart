@@ -11,6 +11,9 @@ class Circle extends StatefulWidget {
 }
 
 class _CircleState extends State<Circle> {
+
+  List<Offset> points = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,6 +22,15 @@ class _CircleState extends State<Circle> {
           height: double.infinity,
           width: double.infinity,
           child: GestureDetector(
+
+            onPanStart: (details) {
+              setState(() {
+                points.add(details.localPosition);
+              });
+
+              debugPrint(points.toString());
+            },
+
             onDoubleTap: () {
               debugPrint('Double Tapped for testing');
             },
@@ -33,6 +45,8 @@ class _CircleState extends State<Circle> {
 }
 
 
+/*------------------------------------------------------------------------------*/
+
 class CirclePainter extends CustomPainter{
   @override
   void paint(Canvas canvas, Size size) {
@@ -45,8 +59,6 @@ class CirclePainter extends CustomPainter{
     final x = size.width/2;
     final y = size.height/2;
     final center = Offset(x, y);
-
-    debugPrint('$x, $y');
 
     canvas.drawCircle(center, 50, paint);
   }
