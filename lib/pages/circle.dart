@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 
@@ -35,12 +37,24 @@ class CirclePainter extends CustomPainter{
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint();
+    paint.color = Colors.red;
+    paint.style = PaintingStyle.stroke;
+    paint.strokeWidth = 20;
+
+    // size variable is the size of the canvas
+    final x = size.width/2;
+    final y = size.height/2;
+    final center = Offset(x, y);
+
+    debugPrint('$x, $y');
+
+    canvas.drawCircle(center, 50, paint);
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     // TODO: implement shouldRepaint
-    throw false;
+    return true;
   }
 
 }
