@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-
 class Circle extends StatefulWidget {
   const Circle({super.key});
 
@@ -12,32 +11,52 @@ class Circle extends StatefulWidget {
 
 class _CircleState extends State<Circle> {
 
-  List<Offset> points = [];
+  final List<Offset> points = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {
+            points.clear();
+          });
+        },
+        child: const Icon(Icons.refresh),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
+
+
+
       body: SafeArea(
-        child: SizedBox(
-          height: double.infinity,
-          width: double.infinity,
-          child: GestureDetector(
+        child: Column(
+          children: [
 
-            onPanStart: (details) {
-              setState(() {
-                points.add(details.localPosition);
-              });
+            Expanded(
+              child: GestureDetector(
 
-              debugPrint(points.toString());
-            },
+                onPanStart: (details) {
+                  setState(() {
+                    points.add(details.localPosition);
+                  });
+                },
 
-            onDoubleTap: () {
-              debugPrint('Double Tapped for testing');
-            },
-            child: CustomPaint(
-              painter: CirclePainter(),
+                onPanUpdate: (details) {
+                  setState(() {
+                    points.add(details.localPosition);
+                  });
+                },
+
+                onDoubleTap: () {
+                  debugPrint('Double Tapped for testing');
+                },
+                child: CustomPaint(
+                  painter: CirclePainter(points: points),
+                  child: Container(),
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
@@ -48,24 +67,25 @@ class _CircleState extends State<Circle> {
 /*------------------------------------------------------------------------------*/
 
 class CirclePainter extends CustomPainter{
+
+  final List<Offset> points;
+
+  CirclePainter({required this.points});
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint();
     paint.color = Colors.red;
     paint.style = PaintingStyle.stroke;
-    paint.strokeWidth = 20;
+    paint.strokeWidth = 10;
+    paint.strokeCap = StrokeCap.round;
 
     // size variable is the size of the canvas
-    final x = size.width/2;
-    final y = size.height/2;
-    final center = Offset(x, y);
 
-    canvas.drawCircle(center, 50, paint);
+    canvas.drawPoints(PointMode.points, points, paint);
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    // TODO: implement shouldRepaint
+  bool shouldRepaint(covariant CirclePainter oldDelegate) {
     return true;
   }
 
