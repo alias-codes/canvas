@@ -11,7 +11,7 @@ class Circle extends StatefulWidget {
 
 class _CircleState extends State<Circle> {
 
-  final List<Offset> points = [];
+  final List<Offset?> points = [];
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +50,10 @@ class _CircleState extends State<Circle> {
                   });
                 },
 
-                onDoubleTap: () {
-                  debugPrint('Double Tapped for testing');
+                onPanEnd: (details) {
+                  setState(() {
+                    points.add(null);
+                  });
                 },
                 child: CustomPaint(
                   painter: CirclePainter(points: points),
@@ -71,7 +73,7 @@ class _CircleState extends State<Circle> {
 
 class CirclePainter extends CustomPainter{
 
-  final List<Offset> points;
+  final List<Offset?> points;
 
   CirclePainter({required this.points});
   @override
@@ -84,7 +86,18 @@ class CirclePainter extends CustomPainter{
 
     // size variable is the size of the canvas
 
-    canvas.drawPoints(PointMode.points, points, paint);
+    // canvas.drawLine();
+    for (int i =0; i <= points.length -2; i++) {
+      if(points[i] == null || points[i+1] == null){
+        continue;
+      }
+      canvas.drawLine(
+        points[i]!,
+        points[i+1]!,
+        paint
+      );
+
+    }
   }
 
   @override
