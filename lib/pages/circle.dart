@@ -16,16 +16,19 @@ class _CircleState extends State<Circle> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Draw Anything', ),
+        backgroundColor: Color.fromRGBO(105, 223, 209, 0.657),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           setState(() {
             points.clear();
           });
         },
-        child: const Icon(Icons.refresh),
+        child: const Icon(Icons.delete),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
-
 
 
       body: SafeArea(
