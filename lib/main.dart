@@ -13,7 +13,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Brain Train',
-      home: Circle(),
+      theme: ThemeData.light(),
+      home: const Circle(),
     );
   }
 }

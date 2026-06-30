@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
@@ -17,8 +16,8 @@ class _CircleState extends State<Circle> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Draw Anything', ),
-        backgroundColor: Color.fromRGBO(105, 223, 209, 0.657),
+        title: const Text('Draw Anything'),
+        backgroundColor: const Color.fromRGBO(180, 147, 255, 1.0),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -30,26 +29,22 @@ class _CircleState extends State<Circle> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
 
-
       body: SafeArea(
         child: Column(
           children: [
-
             Expanded(
               child: GestureDetector(
-
+                behavior: HitTestBehavior.opaque,
                 onPanStart: (details) {
                   setState(() {
                     points.add(details.localPosition);
                   });
                 },
-
                 onPanUpdate: (details) {
                   setState(() {
                     points.add(details.localPosition);
                   });
                 },
-
                 onPanEnd: (details) {
                   setState(() {
                     points.add(null);
@@ -61,6 +56,8 @@ class _CircleState extends State<Circle> {
                 ),
               ),
             ),
+            ElevatedButton(onPressed: (){}, child: Text('Analyze', style: TextStyle(fontSize: 20),),),
+            SizedBox(height: 12,),
           ],
         ),
       ),
@@ -68,41 +65,26 @@ class _CircleState extends State<Circle> {
   }
 }
 
-
-/*------------------------------------------------------------------------------*/
-
 class CirclePainter extends CustomPainter{
-
   final List<Offset?> points;
 
   CirclePainter({required this.points});
+
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint();
-    paint.color = Colors.red;
-    paint.style = PaintingStyle.stroke;
-    paint.strokeWidth = 10;
-    paint.strokeCap = StrokeCap.round;
+    Paint paint = Paint()
+      ..color = Colors.red
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 10
+      ..strokeCap = StrokeCap.round;
 
-    // size variable is the size of the canvas
-
-    // canvas.drawLine();
-    for (int i =0; i <= points.length -2; i++) {
-      if(points[i] == null || points[i+1] == null){
-        continue;
+    for (int i = 0; i <= points.length - 2; i++) {
+      if (points[i] != null && points[i + 1] != null) {
+        canvas.drawLine(points[i]!, points[i + 1]!, paint);
       }
-      canvas.drawLine(
-        points[i]!,
-        points[i+1]!,
-        paint
-      );
-
     }
   }
 
   @override
-  bool shouldRepaint(covariant CirclePainter oldDelegate) {
-    return true;
-  }
-
+  bool shouldRepaint(covariant CirclePainter oldDelegate) => true;
 }
