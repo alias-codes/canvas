@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class Circle extends StatefulWidget {
@@ -9,8 +8,25 @@ class Circle extends StatefulWidget {
 }
 
 class _CircleState extends State<Circle> {
-
   final List<Offset?> points = [];
+
+  Offset? findCenter(List<Offset?> points) {
+    int n = 0;
+    double x = 0, y = 0;
+    for (int i = 0; i < points.length; i++) {
+      if (points[i] != null) {
+        n++;
+        x += points[i]!.dx;
+        y += points[i]!.dy;
+      }
+    }
+
+    double centerX = x / n;
+    double centerY = y / n;
+
+    if (n == 0) return null;
+    return Offset(centerX, centerY);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,8 +72,11 @@ class _CircleState extends State<Circle> {
                 ),
               ),
             ),
-            ElevatedButton(onPressed: (){}, child: Text('Analyze', style: TextStyle(fontSize: 20),),),
-            SizedBox(height: 12,),
+            ElevatedButton(
+              onPressed: () {},
+              child: Text('Analyze', style: TextStyle(fontSize: 20)),
+            ),
+            SizedBox(height: 12),
           ],
         ),
       ),
@@ -65,7 +84,7 @@ class _CircleState extends State<Circle> {
   }
 }
 
-class CirclePainter extends CustomPainter{
+class CirclePainter extends CustomPainter {
   final List<Offset?> points;
 
   CirclePainter({required this.points});
